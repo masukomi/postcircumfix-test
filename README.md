@@ -1,7 +1,7 @@
 Postcircumfix bug test
 ====
 
-This repo only exists in support of a bug I think I've stumbled across in Raku.
+This repo only exists in support of [a bug I think I've stumbled across in Rakudo](https://github.com/rakudo/rakudo/issues/3799).
 
 Postcircumfix::Misc the simpler class exhibiting the problem
 - `slice` just returns a "sliced" `List` of the guts of the thing 
