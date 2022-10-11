@@ -1,0 +1,43 @@
+use lib 'lib';
+
+use Test;
+use Postcircumfix::Names;
+use Postcircumfix::Misc;
+
+# NOTE these examples based on the answers to
+# this stack overflow question:
+# https://stackoverflow.com/questions/60043334/implementing-at-pos-to-return-an-object-instead-of-a-list-of-things
+
+
+# SIMPLEST TEST
+# Postcircumfix::Misc uses the 2 parameter form of
+# the postcircumfex function suggested by Liz
+my $misc = Postcircumfix::Misc.new([1,2,3,4]);
+is($misc.contents, [1,2,3,4]);
+lives-ok({$misc[0..1]} , "direct call of postcircumfix");
+# the following will blow up with
+# Index out of range. Is: 1, should be in 0..0
+lives-ok({is($misc[0..1], [1,2])}, "lazy call of postcircumfix");
+
+# More complex test, attempts to replicate intended usage
+# Postcircumfix::Names uses the 3 param form of the postcircumfex
+# function as in the accepted answer
+# It ALSO goes on to replicate a more real situation of creating
+# a new version of the same class with a "sliced" subset of its guts.
+
+my $names = Postcircumfix::Names.new(<jonathan joseph jotaro josuke giorno>);
+is($names.^name, 'Postcircumfix::Names');
+is($names.elems, 5);
+is($names.gist, 'jonathan, joseph, jotaro, josuke, giorno');
+
+my $sliced_names;
+lives-ok({ $sliced_names = $names[0..2] }, "postcircumfex successfully called");
+is($sliced_names.^name, 'Postcircumfix::Names');
+is($sliced_names.elems, 3);
+# vvv this appears to cause line 11 to get invoked lazily,
+#     and then blows up with
+#     Index out of range. Is: 1, should be in 0..0
+lives-ok({ is($sliced_names.gist, 'jonathan, joseph, jotaro') }, "lazily invokes postcircumfix");
+# is($sliced_names.gist, 'jonathan, joseph, jotaro');
+
+done-testing;
