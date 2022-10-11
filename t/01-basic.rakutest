@@ -34,7 +34,7 @@ my $sliced_names;
 lives-ok({ $sliced_names = $names[0..2] }, "postcircumfex successfully called");
 is($sliced_names.^name, 'Postcircumfix::Names');
 is($sliced_names.elems, 3);
-# vvv this appears to cause line 11 to get invoked lazily,
+# vvv this appears to cause the [] method call on line 34 to get invoked lazily,
 #     and then blows up with
 #     Index out of range. Is: 1, should be in 0..0
 lives-ok({ is($sliced_names.gist, 'jonathan, joseph, jotaro') }, "lazily invokes postcircumfix");
