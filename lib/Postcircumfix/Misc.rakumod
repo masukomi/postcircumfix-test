@@ -13,7 +13,7 @@ class Postcircumfix::Misc {
 
 # NOTE 2 parameter form
 # (Names uses 3 parameter form)
-multi sub postcircumfix:<[ ]> ( $object, *@indices ) {
+multi sub postcircumfix:<[ ]> ( $object, *@indices ) is export {
 	constant &slicer = &postcircumfix:<[ ]>;
 	($object ~~ Postcircumfix::Misc) ?? $object.slice(@indices) !! slicer($object, @indices);
 }
